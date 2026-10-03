@@ -1,0 +1,5 @@
+L'abonnement se trouve désormais dans le compte et non plus sous le club. Un compte Apple porte un abonnement, et il appartient définitivement à un club : « Gérer l'abonnement » indique lequel.
+
+Les grands boutons réagissent maintenant sur toute leur surface, et pas seulement sur le texte.
+
+Ainsi que de petites corrections du parcours d'achat.

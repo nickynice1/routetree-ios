@@ -1,0 +1,125 @@
+{
+  "_wozu": "Die Texte der Storebilder. Gebaut mit scripts/storebilder_bauen.py",
+  "sprachen": {
+    "en-US": {
+      "01": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Draw it, don't describe it",
+        "schlagzeile": "Every yard on paper\nis a yard on the field",
+        "unter": "Routes snap to half yards and 45 degrees. Seven game formats, each with its own dimensions from its own rulebook."
+      },
+      "02": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "The whole playbook",
+        "schlagzeile": "Your call sheet,\nalways in your pocket",
+        "unter": "Sorted by situation and colour. Works on the sideline without a signal."
+      },
+      "03": {
+        "name": "uhr",
+        "bild": "04-uhr.png",
+        "geraet": "uhr",
+        "augenbraue": "On the Apple Watch",
+        "schlagzeile": "The play on your wrist,\nnot in your hand",
+        "unter": "The playbook on your watch, sorted by category. In game mode it stays on the play you are reading."
+      }
+    },
+    "de-DE": {
+      "01": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Zeichnen statt beschreiben",
+        "schlagzeile": "Fünf Yards auf dem Blatt\nsind fünf Yards auf dem Platz",
+        "unter": "Routen rasten auf halbe Yards und auf 45 Grad. Sieben Spielformen, jede mit ihren eigenen Maßen aus ihrem eigenen Regelbuch."
+      },
+      "02": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Das ganze Playbook",
+        "schlagzeile": "Euer Call Sheet,\nimmer in der Tasche",
+        "unter": "Nach Situation und Farbe sortiert. Funktioniert an der Seitenlinie auch ohne Empfang."
+      },
+      "03": {
+        "name": "uhr",
+        "bild": "04-uhr.png",
+        "geraet": "uhr",
+        "augenbraue": "Auf der Apple Watch",
+        "schlagzeile": "Der Play am Handgelenk,\nnicht in der Hand",
+        "unter": "Das Playbook auf der Uhr, nach Kategorien sortiert. Im Spielmodus bleibt sie auf dem Play stehen, den ihr gerade lest."
+      }
+    },
+    "es-ES": {
+      "01": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Dibujar, no describir",
+        "schlagzeile": "Cinco yardas en el papel\nson cinco en el campo",
+        "unter": "Las routes encajan en media yarda y en 45 grados. Siete modalidades, cada una con sus medidas de su propio reglamento."
+      },
+      "02": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Todo el playbook",
+        "schlagzeile": "Vuestro call sheet,\nsiempre en el bolsillo",
+        "unter": "Ordenado por situación y color. Funciona en la banda también sin cobertura."
+      },
+      "03": {
+        "name": "uhr",
+        "bild": "04-uhr.png",
+        "geraet": "uhr",
+        "augenbraue": "En el Apple Watch",
+        "schlagzeile": "La jugada en la muñeca,\nno en la mano",
+        "unter": "El playbook en el reloj, ordenado por categorías. En modo partido se queda en la jugada que estás leyendo."
+      }
+    },
+    "fr-FR": {
+      "01": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Dessiner, pas décrire",
+        "schlagzeile": "Cinq yards sur le papier\nsont cinq yards sur le terrain",
+        "unter": "Les routes s'alignent sur le demi-yard et sur 45 degrés. Sept formats, chacun avec ses dimensions de son propre règlement."
+      },
+      "02": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Tout le playbook",
+        "schlagzeile": "Votre call sheet,\ntoujours dans la poche",
+        "unter": "Trié par situation et par couleur. Fonctionne au bord du terrain même sans réseau."
+      },
+      "03": {
+        "name": "uhr",
+        "bild": "04-uhr.png",
+        "geraet": "uhr",
+        "augenbraue": "Sur l'Apple Watch",
+        "schlagzeile": "Le jeu au poignet,\npas dans la main",
+        "unter": "Le playbook à la montre, trié par catégories. En mode match, il reste sur le jeu que vous lisez."
+      }
+    },
+    "it": {
+      "01": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Disegnare, non descrivere",
+        "schlagzeile": "Cinque yard sul foglio\nsono cinque yard in campo",
+        "unter": "Le route si agganciano a mezza yard e a 45 gradi. Sette formati, ciascuno con le misure del proprio regolamento."
+      },
+      "02": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Tutto il playbook",
+        "schlagzeile": "La vostra call sheet,\nsempre in tasca",
+        "unter": "Ordinata per situazione e colore. Funziona a bordo campo anche senza rete."
+      },
+      "03": {
+        "name": "uhr",
+        "bild": "04-uhr.png",
+        "geraet": "uhr",
+        "augenbraue": "Su Apple Watch",
+        "schlagzeile": "La giocata al polso,\nnon in mano",
+        "unter": "Il playbook all'orologio, ordinato per categorie. In modalità partita resta sulla giocata che state leggendo."
+      }
+    }
+  }
+}

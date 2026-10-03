@@ -1,0 +1,5 @@
+La suscripción está ahora en la cuenta y no en el club. Una cuenta de Apple admite una suscripción, y pertenece a un club de forma permanente: en "Gestionar suscripción" se indica a cuál.
+
+Los botones grandes ahora responden en toda su superficie, no solo en el texto.
+
+Además, correcciones menores en el proceso de compra.

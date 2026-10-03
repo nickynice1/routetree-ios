@@ -1,0 +1,5 @@
+The subscription now lives in your account instead of under the club. One Apple account carries one subscription, and it belongs to one club permanently -- "Manage subscription" says which.
+
+The large buttons now respond across their whole area, not just on the text.
+
+Plus smaller corrections to the purchase flow.

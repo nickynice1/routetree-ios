@@ -1,0 +1,42 @@
+Routetree is the playbook app for flag and tackle football – built to the dimensions of your format, not to converted ones.
+
+BRING YOUR OLD PLAYBOOK WITH YOU
+Switching does not mean starting over. Upload the printout as a PDF or a photo and Routetree reads the plays out of it: formation, routes, position labels and the names you gave them. Whatever it cannot read with confidence it shows you before importing, instead of quietly guessing. And if all you have is the sheet from the kitchen table, photograph it with the camera.
+
+DRAW, DON'T JUST LOOK UP
+Drag a player, tap a route, done. Routes snap to half yards and to 45 degrees. Motion, block, handoff, pass and zone are their own line types, with undo, mirror and playback. It saves by itself.
+
+SEVEN GAME FORMATS, EACH WITH ITS OWN DIMENSIONS
+Flag 5-on-5 and tackle with 11, 9, 9 on a narrow field, 7, 6 or 5. You pick it when you create the team; after that the field, end zone, hash marks, formation and rule notes are right by themselves. Every number comes from that format's rulebook and is not converted from another one.
+
+SEVEN RULEBOOKS
+AFVD, IFAF, NFL FLAG, FIDAF, FEFA, FFFA and FMFA, plus the competition classes. Switch a finished playbook over and Routetree does not quietly recalculate anything – it tells you which plays need a decision. A running play that is clean under IFAF is a penalty under NFL FLAG rules.
+
+FIVE YARDS ON PAPER ARE FIVE YARDS ON THE FIELD
+Draw a route at twelve yards and you mean twelve yards. Not an eleven-on-eleven program with the dimensions scaled down, and not a flag program guessing its way through the eleven-man game.
+
+A LIBRARY TO START FROM
+Ready-drawn concepts that fit your format: in flag, Mesh, Flood, Verticals, Smash, Stick, Levels, Wheel, Screen, Snag and Slant & Flat. With formation, routes and a paragraph on what they run against. Take one, rename it, change it. Nobody starts at an empty page.
+
+PRINT FOR GAME DAY
+Wristcoach inserts with a cutting zone and corner marks, playcards to cut out, a call sheet grouped by situation. Real PDFs, true to scale. Share from the app or print straight away.
+
+ON YOUR WRIST
+There is a version for the Apple Watch: the playbook at your wrist, sorted by category, and in game mode it stays on the play you are reading.
+
+PRACTISE INSTEAD OF EXPLAINING
+Practice mode asks instead of telling: show the diagram, name the play. No timer, no leaderboard. The coaching staff sees who knows which play for certain, and can assign plays to individual players.
+
+FOR THE WHOLE TEAM
+Head coach and assistants edit, the team watches. Anyone who only watches costs nothing. Players join with a team code, without anyone typing out accounts.
+
+OFFLINE
+There are dead spots on the sideline. Viewing and practising work there too.
+
+YOUR PLAYS STAY YOUR PLAYS
+Servers in Germany. No tracking, no ad networks, nothing passed to third parties. Each team sees only its own. The account can be deleted completely from inside the app.
+
+To try it out: one playbook, eight plays, printouts with a demo strip.
+
+Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy Policy: https://routetree.de/datenschutz/

@@ -1,0 +1,42 @@
+Routetree est le playbook pour le flag et le tackle football, aux dimensions de votre format, pas à des dimensions converties.
+
+VOTRE ANCIEN PLAYBOOK VOUS SUIT
+Changer d'outil ne veut pas dire repartir de zéro. Téléversez l'impression, en PDF ou en image, et Routetree en extrait les jeux : formation, routes, abréviations de poste et les noms que vous leur avez donnés. Ce qu'il ne reconnaît pas avec certitude, il vous le montre avant l'import au lieu de deviner en silence. Et s'il n'y a que la feuille de la table de cuisine, photographiez-la avec l'appareil photo.
+
+DESSINER, PAS SEULEMENT CONSULTER
+Faites glisser un joueur, touchez une route, c'est fait. Les routes s'alignent sur le demi-yard et sur 45 degrés. Motion, bloc, remise, passe et zone ont chacun leur type de trait, avec annulation, miroir et lecture. L'enregistrement est automatique.
+
+SEPT FORMATS, CHACUN AVEC SES DIMENSIONS
+Flag 5 contre 5 et tackle à 11, 9, 9 sur terrain étroit, 7, 6 ou 5. On le choisit en créant l'équipe ; ensuite le terrain, l'en-but, les hash marks, la formation et les avis de règle sont justes d'eux-mêmes. Chaque chiffre vient du règlement de ce format et n'est pas converti d'un autre.
+
+SEPT RÈGLEMENTS
+AFVD, IFAF, NFL FLAG, FIDAF, FEFA, FFFA et FMFA, plus les catégories. Si vous basculez un playbook déjà fait, Routetree ne recalcule rien en silence : il vous dit quels jeux demandent une décision. Un jeu de course propre selon l'IFAF est une pénalité sous les règles NFL FLAG.
+
+CINQ YARDS SUR LE PAPIER SONT CINQ YARDS SUR LE TERRAIN
+Qui trace une route à douze yards veut dire douze yards. Ni un programme de onze contre onze aux dimensions rapetissées, ni un programme de flag qui devine dans le jeu à onze.
+
+UNE BIBLIOTHÈQUE POUR COMMENCER
+Des concepts déjà dessinés qui correspondent à votre format : en flag, Mesh, Flood, Verticals, Smash, Stick, Levels, Wheel, Screen, Snag et Slant & Flat. Avec la formation, les routes et un paragraphe sur ce contre quoi ils se courent. Reprenez-le, renommez-le, adaptez-le. Personne ne commence devant une page blanche.
+
+IMPRIMER POUR LE JOUR DU MATCH
+Inserts de wristcoach avec zone de coupe et repères d'angle, playcards à découper, une call sheet regroupée par situation. De vrais PDF, à l'échelle. Partager depuis l'app ou imprimer directement.
+
+AU POIGNET
+Il existe une version dédiée pour l'Apple Watch : le playbook au poignet, trié par catégories, et en mode match il reste sur le jeu que vous êtes en train de lire.
+
+RÉVISER PLUTÔT QU'EXPLIQUER
+Le mode révision interroge au lieu de souffler : le schéma s'affiche, à vous de nommer le jeu. Sans chrono et sans classement. Le staff voit qui connaît quel jeu avec certitude et peut assigner des jeux à tel ou tel joueur.
+
+POUR TOUTE L'ÉQUIPE
+Le head coach et les assistants modifient, l'équipe regarde. Qui ne fait que regarder ne coûte rien. Les joueurs arrivent avec un code d'équipe, sans que personne ait à saisir des accès.
+
+HORS RÉSEAU
+Il y a des trous de couverture au bord du terrain. Consulter et réviser y fonctionnent aussi.
+
+VOS JEUX RESTENT VOS JEUX
+Serveurs en Allemagne. Pas de pistage, pas de régies publicitaires, rien transmis à des tiers. Chaque équipe ne voit que la sienne. Le compte peut être supprimé entièrement depuis l'app.
+
+Pour essayer : un playbook, huit jeux, des impressions avec un bandeau de démo.
+
+Conditions d'utilisation : https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Confidentialité : https://routetree.de/datenschutz/

@@ -1,0 +1,5 @@
+L'abbonamento si trova ora nell'account e non più sotto la società. Un account Apple porta un abbonamento, e appartiene stabilmente a una società: in "Gestisci abbonamento" si vede quale.
+
+I pulsanti grandi ora rispondono su tutta la superficie, non solo sul testo.
+
+Inoltre, piccole correzioni al percorso di acquisto.
