@@ -1,0 +1,39 @@
+{
+  "_wozu": "Anzeigename und Beschreibung der vier Abos, je Sprache. Hochgeladen mit scripts/store_texte.py --abos.",
+  "_grenzen": "Apple nimmt beim Namen hoechstens 30 Zeichen und bei der Beschreibung hoechstens 45. Beides wird vor dem Senden geprueft.",
+  "_zwei_monate": "Bis zum 10.10.2026 stand bei den Jahresabos in allen fuenf Sprachen „zwei Monate geschenkt“. Gemessen ueber alle 175 Gebiete (eigener GET-Lauf gegen appstoreconnect.apple.com) stimmte das beim Standard in 130 Gebieten und beim Premium in 30. In 22 beziehungsweise 12 Gebieten war es weniger als versprochen, in Kanada 0,89 Monate statt zwei. Preise senken schied aus: In 23 Gebieten ist das Jahr grosszuegiger als zehn Monate (Mexiko 8,05), und die auf genau zehn zu heben waere eine Preiserhoehung. Also die Aussage, nicht die Zahlen. Gemessen gilt in ALLEN 175 Gebieten und bei beiden Stufen: Jahr unter zwoelf Monatspreisen, Spanne 8,01 bis 11,11.",
+  "produkte": {
+    "de.routetree.app.basis.monat": {
+      "de-DE": {"name": "Standard, monatlich", "description": "2 Mannschaften, 3 Playbooks, 5 Trainer"},
+      "en-US": {"name": "Standard, monthly", "description": "2 teams, 3 playbooks, 5 coaches"},
+      "es-ES": {"name": "Standard, mensual", "description": "2 equipos, 3 playbooks, 5 entrenadores"},
+      "es-MX": {"name": "Standard, mensual", "description": "2 equipos, 3 libros de jugadas, 5 coaches"},
+      "fr-FR": {"name": "Standard, mensuel", "description": "2 équipes, 3 playbooks, 5 coachs"},
+      "it": {"name": "Standard, mensile", "description": "2 squadre, 3 playbook, 5 allenatori"}
+    },
+    "de.routetree.app.unbegrenzt.monat": {
+      "de-DE": {"name": "Premium, monatlich", "description": "Unbegrenzt Mannschaften, Hefte, Trainer"},
+      "en-US": {"name": "Premium, monthly", "description": "Unlimited teams, playbooks and coaches"},
+      "es-ES": {"name": "Premium, mensual", "description": "Equipos, playbooks y entrenadores sin límite"},
+      "es-MX": {"name": "Premium, mensual", "description": "Equipos, libros y coaches sin límite"},
+      "fr-FR": {"name": "Premium, mensuel", "description": "Équipes, playbooks et coachs illimités"},
+      "it": {"name": "Premium, mensile", "description": "Squadre, playbook e allenatori illimitati"}
+    },
+    "de.routetree.app.basis.jahr": {
+      "de-DE": {"name": "Standard, jährlich", "description": "Wie Standard, günstiger als monatlich"},
+      "en-US": {"name": "Standard, yearly", "description": "Standard, cheaper than paying monthly"},
+      "es-ES": {"name": "Standard, anual", "description": "Standard, más barato que pagar al mes"},
+      "es-MX": {"name": "Standard, anual", "description": "Standard, más barato que pagar al mes"},
+      "fr-FR": {"name": "Standard, annuel", "description": "Standard, moins cher que le mensuel"},
+      "it": {"name": "Standard, annuale", "description": "Standard, più conveniente del mensile"}
+    },
+    "de.routetree.app.unbegrenzt.jahr": {
+      "de-DE": {"name": "Premium, jährlich", "description": "Wie Premium, günstiger als monatlich"},
+      "en-US": {"name": "Premium, yearly", "description": "Premium, cheaper than paying monthly"},
+      "es-ES": {"name": "Premium, anual", "description": "Premium, más barato que pagar al mes"},
+      "es-MX": {"name": "Premium, anual", "description": "Premium, más barato que pagar al mes"},
+      "fr-FR": {"name": "Premium, annuel", "description": "Premium, moins cher que le mensuel"},
+      "it": {"name": "Premium, annuale", "description": "Premium, più conveniente del mensile"}
+    }
+  }
+}

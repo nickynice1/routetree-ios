@@ -1,0 +1,42 @@
+Routetree es el libro de jugadas para tocho bandera (flag football) y tackle, hecho con las medidas de tu modalidad y no con medidas convertidas.
+
+REGLAMENTO FMFA, NO UNO PARECIDO
+El reglamento de la Federación Mexicana de Fútbol Americano viene incluido, junto con IFAF y NFL FLAG. Eliges el reglamento al crear el equipo, y a partir de ahí el campo, la zona de anotación, la formación y los avisos salen correctos solos. Si le cambias el reglamento a un libro ya hecho, Routetree no recalcula nada en silencio: te dice qué jugadas necesitan una decisión. Una jugada de carrera que con IFAF es limpia, con NFL FLAG es castigo.
+
+DIBUJAR, NO SOLO CONSULTAR
+Arrastra un jugador, toca una ruta y listo. Las rutas encajan en media yarda y en 45 grados. Motion, bloqueo, entrega, pase y zona son tipos de línea propios, con deshacer, espejo y reproducción. Se guarda solo.
+
+SIETE MODALIDADES, CADA UNA CON SUS MEDIDAS
+Flag 5 contra 5 y tackle con 11, 9, 9 en campo angosto, 7, 6 o 5. Cada cifra viene del reglamento de esa modalidad y no está convertida de otra.
+
+CINCO YARDAS EN EL PAPEL SON CINCO YARDAS EN EL CAMPO
+Quien dibuja una ruta a doce yardas quiere decir doce yardas. Ni un programa de once contra once con las medidas encogidas, ni uno de flag que va adivinando en el juego de once.
+
+UNA BIBLIOTECA PARA EMPEZAR
+Conceptos ya dibujados que embonan con tu modalidad: en flag, Mesh, Flood, Verticals, Smash, Stick, Levels, Wheel, Screen, Snag y Slant & Flat. Con formación, rutas y un párrafo sobre contra qué se corren. Tómalo, cámbiale el nombre, modifícalo. Nadie empieza con una hoja en blanco.
+
+IMPRIMIR PARA EL DÍA DE JUEGO
+Tarjetas de muñequera con zona de corte y marcas de esquina, playcards para recortar, un call sheet agrupado por situación. PDFs de verdad, a escala. Comparte desde la app o imprime directo.
+
+EN LA MUÑECA
+Hay una versión propia para el Apple Watch: el libro de jugadas en la muñeca, ordenado por categorías, y en modo de juego se queda en la jugada que estás leyendo.
+
+EL COACH PIDE, EL RELOJ LA MUESTRA
+En modo coaching tú eliges la jugada desde la banda y le aparece sola en el reloj a tu quarterback. También puedes dejar varias formadas: él toca una vez y pasa a la siguiente.
+
+PRACTICAR EN LUGAR DE EXPLICAR
+El modo de práctica pregunta en vez de dictar: muestra el diagrama, di el nombre. Sin reloj y sin tabla de posiciones. El cuerpo técnico ve quién se sabe cada jugada con seguridad y puede asignarle jugadas a jugadores concretos.
+
+PARA TODO EL EQUIPO
+El head coach y los asistentes editan, el equipo ve. Quien nada más ve no cuesta nada. Los jugadores entran con un código de equipo, sin que nadie tenga que teclear accesos.
+
+SIN CONEXIÓN
+En la banda hay zonas sin señal. Ver y practicar también funcionan ahí.
+
+TUS JUGADAS SIGUEN SIENDO TUYAS
+Servidores en Alemania. Sin rastreo, sin redes de publicidad, sin entregarle nada a terceros. Cada equipo ve solo lo suyo. La cuenta se puede borrar por completo desde la app.
+
+Para probarlo: un libro de jugadas, ocho jugadas, impresiones con una franja de demostración.
+
+Condiciones de uso: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacidad: https://routetree.de/es-mx/datenschutz/

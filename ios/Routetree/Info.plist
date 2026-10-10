@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Der Rest wird aus project.yml erzeugt. Hier steht nur, was
+	     XcodeGen nicht selbst setzt. -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!-- Kein Ausnahmefall. Der Server spricht HTTPS, und eine
+		     Ausnahme, die "nur für die Entwicklung" gedacht war, bleibt
+		     erfahrungsgemäß drin. -->
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+	</dict>
+</dict>
+</plist>

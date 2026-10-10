@@ -1,0 +1,226 @@
+# Routetree bauen und nach TestFlight laden.
+#
+# WARUM DAS HIER UND NICHT AUF EINEM MAC. Es gibt keinen. Entwickelt wird
+# auf einem Linux-Server, und Xcode laeuft nur auf macOS -- dieser
+# Laeufer ist also nicht nur die Auslieferung, sondern der EINZIGE
+# Compiler des Projekts. Wer Swift schreibt, sieht seine Fehler erst
+# hier. Deshalb laeuft der reine Bau bei jedem Push auf `ios/`, und nur
+# das Hochladen haengt an einer bewussten Ausloesung.
+#
+# Aufgebaut nach dem Vorbild von `nova-app`, wo derselbe Weg laeuft.
+#
+# GEHEIMNISSE (Repository → Settings → Secrets and variables → Actions):
+#
+#   APP_STORE_CONNECT_KEY_ID        Kennung des Schluessels
+#   APP_STORE_CONNECT_ISSUER_ID     Aussteller
+#   APP_STORE_CONNECT_API_KEY       Inhalt der .p8-Datei, vollstaendig
+#   MATCH_PASSWORD                  entschluesselt das Zertifikats-Repo
+#   MATCH_GIT_BASIC_AUTHORIZATION   Zugang zu nova-app-certs (base64)
+
+name: iOS
+
+on:
+  # KEIN `push`-Ausloeser mehr, und das aus zwei Gruenden.
+  #
+  # Erstens laeuft dieser Workflow im PRIVATEN Repo ohnehin nicht: Das
+  # Minutenkontingent ist leer, jeder Lauf stirbt nach vier Sekunden ohne
+  # Protokoll. Gebaut wird deshalb ueber einen oeffentlichen Spiegel, den
+  # `scripts/ios_bauen.sh` fuer die Dauer eines Baus anlegt und danach
+  # wieder loescht.
+  #
+  # Zweitens kostet ein macOS-Laeufer das ZEHNFACHE eines Linux-Laeufers.
+  # Ein Ausloeser bei jedem Push auf `ios/**` heisst: Jede Kommaaenderung
+  # in einer Swift-Datei startet eine halbe Stunde teure Rechenzeit. Der
+  # Bau soll laufen, wenn jemand ihn will, nicht wenn jemand tippt.
+  workflow_dispatch:
+    inputs:
+      hochladen:
+        description: "Nach TestFlight hochladen (sonst nur bauen und testen)"
+        type: boolean
+        default: false
+      bilder:
+        description: "Bildschirmfotos für den Store aufnehmen (R120)"
+        type: boolean
+        default: false
+      bildersprachen:
+        # JE SPRACHE EIN DURCHGANG, und ein Durchgang dauert Minuten.
+        # Fuenf Sprachen mal zwei Geraete sind zehn Laeufe auf einem
+        # Laeufer, der das Zehnfache eines Linux-Laeufers kostet -- wer
+        # nur Englisch nachziehen will, soll nicht fuer fuenf zahlen.
+        description: "Welche Sprachen (Komma), z. B. de,en"
+        type: string
+        default: "de"
+      uhrbilder:
+        # GETRENNT VON `bilder`, weil es ein ganz anderer Weg ist:
+        # watchOS kennt XCUITest nicht, also auch `snapshot` nicht.
+        # Die Uhr wird ueber `simctl` gebootet, gestartet und
+        # fotografiert -- siehe `ios/uhrbilder.sh`.
+        description: "Bildschirmfotos von der Apple Watch (R140)"
+        type: boolean
+        default: false
+
+concurrency:
+  # Zwei Laeufe gleichzeitig vergaeben dieselbe Buildnummer.
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bauen:
+    runs-on: macos-26
+    # NEUNZIG UND NICHT SECHZIG (30.09.2026).
+    #
+    # Sechzig reichten, solange der Bilderlauf nur Deutsch fuhr. Je
+    # Sprache und Geraet ist es ein eigener Oberflaechendurchgang: Zwei
+    # Sprachen mal zwei Geraete sind VIER, und der Lauf vom 30.09.2026
+    # stand nach dreissig Minuten bei der Haelfte -- danach kaeme noch
+    # die Uhr. Ein Abbruch am Zeitlimit verliert alle Aufnahmen, auch
+    # die fertigen.
+    #
+    # Wer fuenf Sprachen fahren will, teilt besser auf: erst
+    # `--bilder de,en`, dann `--bilder es,fr,it`. Ein macOS-Laeufer
+    # kostet das Zehnfache eines Linux-Laeufers, und ein Lauf, der am
+    # Limit stirbt, kostet ihn trotzdem.
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: ios
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Xcode-Fassung zeigen
+        run: xcodebuild -version
+
+      - name: XcodeGen
+        run: brew install xcodegen
+
+      - name: Projekt erzeugen
+        # Die .xcodeproj liegt bewusst NICHT im Repo: eine Binaerkiste
+        # aus verketteten Kennungen, die sich weder lesen noch
+        # zusammenfuehren laesst. `project.yml` ist die Wahrheit.
+        run: xcodegen generate
+
+      - name: Ruby und fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: ios
+
+      - name: Bauen und Tests im Simulator
+        # Laeuft IMMER, auch beim Hochladen: Ein Bau, der nach TestFlight
+        # geht, ohne dass die Tests liefen, ist genau der, bei dem es
+        # jemandem auffaellt.
+        run: bundle exec fastlane pruefen
+
+      - name: Nach TestFlight
+        if: inputs.hochladen
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          TESTFLIGHT_HINWEIS: ${{ github.event.head_commit.message }}
+        run: bundle exec fastlane beta
+
+      - name: Bildschirmfotos aufnehmen
+        # NUR AUF ABRUF. Ein Oberflaechendurchgang startet die App
+        # wirklich und braucht Minuten; er gehoert nicht in jeden Bau.
+        if: inputs.bilder
+        env:
+          # DER VORSATZ `TEST_RUNNER_` IST PFLICHT. Der Durchgang laeuft
+          # auf dem Simulator und erbt die Umgebung des Laeufers NICHT;
+          # xcodebuild reicht genau die Variablen mit diesem Vorsatz
+          # hinein und streift ihn dabei ab. Ohne ihn fand der Test am
+          # 15.09.2026 keinen Zugang und uebersprang sich selbst -- der
+          # Lauf war gruen und die Bilder fehlten.
+          TEST_RUNNER_PRUEF_BENUTZER: ${{ secrets.PRUEF_BENUTZER }}
+          TEST_RUNNER_PRUEF_PASSWORT: ${{ secrets.PRUEF_PASSWORT }}
+          BILDER_SPRACHEN: ${{ inputs.bildersprachen }}
+        run: bundle exec fastlane bilder
+
+      - name: Bilder aus dem Ergebnisbuendel holen
+        # Die Aufnahmen haengen als Anhaenge im .xcresult. `xcparse`
+        # holt sie als PNG heraus -- von Hand waere das ein Griff in
+        # eine Binaerkiste.
+        # `always()`: Bricht der Durchgang ab, sind seine Aufnahmen bis
+        # dahin genau das, was man sehen will -- auf ihnen steht, wo.
+        if: always() && inputs.bilder
+        run: |
+          brew install chargepoint/xcparse/xcparse
+          rm -rf bilder && mkdir -p bilder
+          # JE GERAET EIN EIGENES FACH. `lane :bilder` legt unter
+          # `bilder_ausgabe/` einen Ordner je Groesse an
+          # (`iphone-6.9`, `ipad-13`); der Name wandert hier mit, sonst
+          # laegen beide Groessen in einem Topf und welche zu welchem
+          # Geraet gehoert, stuende nur in der Bildgroesse.
+          # EINE EBENE TIEFER als frueher: Seit dem Lauf je Sprache
+          # liegt unter `bilder_ausgabe/` erst das Geraet und darin
+          # die Sprache (`iphone-6.9/en`). Ohne das `*/` mehr fand
+          # die Schleife gar nichts und der Schritt war gruen.
+          for buendel in fastlane/bilder_ausgabe/*/*/*.xcresult; do
+            sprachfach="$(dirname "$buendel")"
+            fach="$(basename "$(dirname "$sprachfach")")/$(basename "$sprachfach")"
+            mkdir -p "bilder/$fach"
+            xcparse screenshots "$buendel" "bilder/$fach" --test || true
+            # AUCH DIE UEBRIGEN ANHAENGE. `screenshots` holt nur Bilder;
+            # der Elementbaum, den der Durchgang bei einem Fehlschlag
+            # anhaengt, blieb im Buendel liegen -- und genau deswegen
+            # lief der Lauf.
+            xcparse attachments "$buendel" "bilder/$fach" --test || true
+          done
+          # NAMEN ENTSCHAERFEN. `xcparse attachments` uebernimmt den
+          # Namen des Anhangs, und XCTest nennt seine eigenen etwa
+          # `Debug description for "X" Button`. Ein Anfuehrungszeichen
+          # im Dateinamen laesst `upload-artifact` den GANZEN Schritt
+          # scheitern -- auch die Bilder, die in Ordnung sind.
+          find bilder -depth -name '*[":<>|*?]*' -print0 | while IFS= read -r -d '' alt; do
+            neu="$(dirname "$alt")/$(basename "$alt" | tr -d '":<>|*?')"
+            [ "$alt" != "$neu" ] && mv -f "$alt" "$neu"
+          done
+          # Groesse mit ausgeben: Ein Bild in der falschen Aufloesung
+          # nimmt der Store nicht an, und das soll hier auffallen und
+          # nicht erst beim Hochladen.
+          find bilder -name '*.png' -exec sips -g pixelWidth -g pixelHeight {} \; \
+            | sed 'N;N;s/\n/ /g'
+
+      - name: Bildschirmfotos von der Uhr
+        # ECHTE, keine gezeichneten. Bis hierher lag im Store ein Bild
+        # aus `scripts/uhrschirm_bauen.py` -- mit demselben Zeichner
+        # gebaut, aber eben nicht aus der App heraus. Apple erlaubt
+        # gestellte Bilder; „aus der App" ist trotzdem das, was ein
+        # Trainer beim Kauf sehen will.
+        #
+        # `always()` DAVOR, und zwar seit dem 30.09.2026: Der Schritt
+        # fuer die Telefonbilder bricht jetzt ab, wenn ein Durchgang
+        # unterwegs aufgibt. Ohne `always()` risse er die Uhr mit --
+        # zwei Bilderstrecken, die nichts miteinander zu tun haben.
+        if: always() && inputs.uhrbilder
+        env:
+          UHR_SPRACHEN: ${{ inputs.bildersprachen }}
+        run: ./uhrbilder.sh
+
+      - name: Bilder mitgeben
+        # Auch hier `always()`: Die Aufnahmen BIS zum Abbruch sind das
+        # Wertvollste am fehlgeschlagenen Lauf -- auf ihnen steht, wo
+        # er haengen blieb.
+        if: always() && (inputs.bilder || inputs.uhrbilder)
+        uses: actions/upload-artifact@v4
+        with:
+          name: bildschirmfotos
+          path: ios/bilder/**
+          if-no-files-found: warn
+
+      - name: Bauprotokoll sichern
+        # Ohne das steht bei einem Fehlschlag nur „Command failed" da,
+        # und der eigentliche Compilerfehler liegt in einer Datei, die
+        # mit dem Laeufer verschwindet.
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bauprotokoll
+          path: |
+            ios/fastlane/test_output/**
+            ~/Library/Logs/gym/**
+          if-no-files-found: ignore

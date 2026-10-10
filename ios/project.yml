@@ -1,0 +1,363 @@
+# Der Bauplan der iOS-App -- als Text, nicht als .xcodeproj.
+#
+# WARUM XCODEGEN. Eine `.xcodeproj` ist eine Binärkiste aus verketteten
+# Kennungen. Sie lässt sich nicht sinnvoll lesen, nicht ordentlich
+# zusammenführen und schon gar nicht von einem Server aus pflegen, auf
+# dem kein Xcode läuft. Diese Datei ist die Wahrheit; die `.xcodeproj`
+# wird im Bau daraus erzeugt und liegt deshalb auch nicht im Repo.
+#
+# Erzeugen:  xcodegen generate    (im Verzeichnis ios/)
+
+name: Routetree
+options:
+  bundleIdPrefix: de.routetree
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "5.10"
+    # Warnungen sind Fehler. Auf einem Server, den niemand ansieht,
+    # verschwindet eine Warnung sonst im Bauprotokoll.
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
+    GCC_TREAT_WARNINGS_AS_ERRORS: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    CODE_SIGN_STYLE: Manual
+
+targets:
+  Routetree:
+    type: application
+    platform: iOS
+    sources:
+      - path: Routetree
+      # DAS PAKETFORMAT GEHOERT BEIDEN SEITEN (R140). Das Telefon
+      # packt, die Uhr packt aus -- zwei Fassungen desselben Formats
+      # waeren zwei Wahrheiten, und ueber eine Funkstrecke merkt es
+      # niemand: Ein Wörterbuch hat keine Typen, ein falscher Schluessel
+      # kommt einfach nicht an.
+      - path: Uhr/Modelle/Uhrpaket.swift
+      - path: Uhr/Modelle/Uhrfunk.swift
+    info:
+      path: Routetree/Info.plist
+      properties:
+        CFBundleDisplayName: Routetree
+        CFBundleShortVersionString: "1.3"
+        CFBundleVersion: "1"
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        # Dunkel bleibt dunkel -- dieselbe Dauerregel wie im Web.
+        UIUserInterfaceStyle: Dark
+        ITSAppUsesNonExemptEncryption: false
+        # DAS EIGENE SCHEMA FUER DIE ANMELDUNG (R19).
+        #
+        # `ASWebAuthenticationSession` erkennt am Schema, dass der Weg
+        # zu Ende ist, und schliesst das Fenster. Ohne diesen Eintrag
+        # bleibt es OFFEN stehen -- der Server hat laengst umgeleitet,
+        # das System weiss nur nicht, wohin.
+        #
+        # Der Name steht an drei Stellen: hier, in
+        # `Fremdanmeldung.schema` und in `views.APP_RUECKRUF`. Wer eine
+        # aendert, muss die anderen mitaendern.
+        CFBundleURLTypes:
+          - CFBundleURLName: de.routetree.app.anmeldung
+            CFBundleURLSchemes:
+              - routetree
+        # DIE SCHLUESSELUEBERGABE TELEFON ZU TELEFON (R143).
+        #
+        # Der Coaching-Schluessel entsteht beim Coach und muss auf die
+        # Uhr des Spielers -- ein iPhone erreicht aber nur SEINE eigene
+        # Uhr. Dazwischen liegt zwangsläufig das Telefon des Spielers,
+        # und dorthin geht der Schluessel ueber Multipeer
+        # (`Schluesselfunk.swift`).
+        #
+        # **OHNE DIESE ZWEI EINTRAEGE FINDET NIEMAND NIEMANDEN**, und
+        # zwar lautlos: Seit iOS 14 braucht jede Suche im lokalen Netz
+        # den Erklaersatz UND die Liste der Dienste. Fehlt der Satz,
+        # beendet iOS die App beim ersten Versuch. Fehlt die Liste,
+        # laeuft alles -- es wird nur nie etwas gefunden, und man sucht
+        # den Fehler im Programm.
+        #
+        # `_tcp` UND `_udp`: Multipeer nimmt beide, und welchen es
+        # nimmt, entscheidet es selbst.
+        NSLocalNetworkUsageDescription: >-
+          Damit dein Coach dir den Schlüssel für den Coaching-Modus
+          direkt von seinem iPhone auf dein iPhone geben kann, ohne ihn
+          vorzulesen.
+        NSBonjourServices:
+          - _rt-coaching._tcp
+          - _rt-coaching._udp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.routetree.app
+        MARKETING_VERSION: "1.3"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1,2"   # iPhone und iPad
+        # Ohne App-Symbol lehnt Apple das Buendel ab -- und zwar erst
+        # NACH dem Hochladen, mit „Missing required icon file. The bundle
+        # does not contain an app icon for iPad of exactly 152x152".
+        # Im Katalog liegt EIN Bild mit 1024 Punkten; die uebrigen
+        # Groessen rechnet Xcode aus. Eine handgepflegte Liste von
+        # siebzehn Dateien waere siebzehn Gelegenheiten, eine zu
+        # vergessen, und genau eine fehlende hat den Upload gestoppt.
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        # Deutsch ist die Entwicklungssprache. Ohne diese Angabe nimmt
+        # Xcode Englisch an und der Store zeigt spaeter die falsche
+        # Ausgangssprache -- bei Nova teuer gelernt.
+        DEVELOPMENT_LANGUAGE: de
+        SWIFT_EMIT_LOC_STRINGS: YES
+    dependencies:
+      # DIE UHR-APP REIST IM BUENDEL DER TELEFON-APP MIT (R140).
+      #
+      # Eine watchOS-App wird nicht einzeln im Store angeboten; sie liegt
+      # unter `Watch/` im Buendel des iPhones, und das System installiert
+      # sie von dort. Ohne diesen Eintrag baut sie zwar, kommt aber
+      # nirgends an -- der Bau ist gruen, die Uhr bleibt leer.
+      #
+      # `subpath` ist der Ordner, den Apple erwartet. Xcode nennt die
+      # Phase „Embed Watch Content"; `copy` mit genau diesem Ziel ist
+      # dasselbe in XcodeGen.
+      - target: RoutetreeUhr
+        embed: true
+        codeSign: true
+        copy:
+          destination: productsDirectory
+          subpath: "$(CONTENTS_FOLDER_PATH)/Watch"
+
+  # DIE APPLE WATCH (R140).
+  #
+  # Niklas am 25.09.2026: „quasi wie ein digitaler wristcoach."
+  #
+  # EIN ZIEL UND NICHT ZWEI. Bis watchOS 6 brauchte eine Uhr-App zwei
+  # Buendel (App und Erweiterung). Seit watchOS 7 genuegt eins mit
+  # `WKApplication: true` -- der alte Weg wird von Xcode 15 an gar nicht
+  # mehr angenommen.
+  RoutetreeUhr:
+    type: application
+    platform: watchOS
+    deploymentTarget: "10.0"
+    sources:
+      - path: Uhr
+      # DIE GETEILTEN DATEIEN, EINZELN AUFGEZAEHLT.
+      #
+      # Warum nicht `Routetree/Modelle` als Ganzes: Dort liegen auch
+      # `Bildpaket` (UIKit) und `Modelle.swift`, das ueber `Laufplan`
+      # die halbe App hinter sich herzieht. Gemessen am 25.09.2026:
+      # Wer `Feldansicht` mitnehmen will, nimmt 98 von 107 Dateien mit.
+      #
+      # Warum kein eigener Ordner `Gemeinsam/`: Ueber neunzig
+      # Python-Dateien haben `ios/Routetree/Modelle/...` fest
+      # eingetragen -- Erzeuger wie Pruefungen. Ein Umzug waere ein
+      # grosser Eingriff fuer nichts.
+      #
+      # DASS DIESE LISTE VOLLSTAENDIG IST, WIRD GERECHNET und nicht
+      # geglaubt: `test_uhr_huelle.py` bildet die Huelle aus dem
+      # Quelltext und vergleicht. Wer hier eine Datei vergisst, bekommt
+      # sonst einen Uebersetzungsfehler auf dem Laeufer -- und der
+      # klingt nach etwas ganz anderem.
+      - path: Routetree/Modelle/Feld.swift
+      - path: Routetree/Modelle/Gestaltung.swift
+      - path: Routetree/Modelle/Kurve.swift
+      - path: Routetree/Modelle/Linienstil.swift
+      - path: Routetree/Modelle/Playfelder.swift
+      - path: Routetree/Modelle/Projektion.swift
+      - path: Routetree/Modelle/Spielform.swift
+      - path: Routetree/Modelle/Zeichnung.swift
+      # Dieselben Uebersetzungen wie das Telefon. Ohne sie faellt
+      # `String(localized:)` auf den Schluessel zurueck -- der ist
+      # deutsch, und eine englische Uhr zeigte deutsche Spielformnamen.
+      #
+      # UND GENAU DAS IST PASSIERT (30.09.2026). Hier standen die fuenf
+      # Ordner EINZELN:
+      #
+      #     - path: Routetree/de.lproj
+      #     - path: Routetree/en.lproj
+      #     ...
+      #
+      # XcodeGen traegt einen `.lproj`-Ordner, auf den man direkt
+      # zeigt, als gewoehnlichen Ordner ein -- nicht als
+      # Lokalisierung. Im Buendel lagen die Dateien, aber
+      # `Bundle.main` bot nur Deutsch an.
+      #
+      # Gemessen an den Bildschirmfotos: Die deutsche und die
+      # englische Uhr waren bis auf die Uhrzeit IDENTISCH. Der Fehler
+      # war nie nur einer der Bilderstrecke -- jeder nicht-deutsche
+      # Traeger sah eine deutsche Uhr.
+      #
+      # Der Weg darueber ist der, den das Telefon schon geht: auf den
+      # ELTERNORDNER zeigen und einschraenken. XcodeGen erkennt die
+      # `.lproj`-Struktur dabei und baut Variantengruppen daraus.
+      #
+      # DASS ES WIRKLICH WIRKT, PRUEFT `ios/uhrbilder.sh` am GEBAUTEN
+      # Buendel und nicht an dieser Datei. Eine Absicht in einer
+      # Konfiguration ist kein Ergebnis.
+      - path: Routetree
+        includes:
+          - "*.lproj/**"
+    info:
+      path: Uhr/Info.plist
+      properties:
+        CFBundleDisplayName: Routetree
+        CFBundleShortVersionString: "1.3"
+        CFBundleVersion: "1"
+        WKApplication: true
+        # WELCHE APP AUF DEM TELEFON DAZUGEHOERT. Ohne diese Zeile
+        # findet das System die Uhr-App nicht zur iPhone-App und
+        # installiert sie nie mit.
+        WKCompanionAppBundleIdentifier: de.routetree.app
+        UIUserInterfaceStyle: Dark
+        ITSAppUsesNonExemptEncryption: false
+        # HEALTHKIT FUER DEN SPIELMODUS (R140.3).
+        #
+        # **Nicht wegen der Gesundheitsdaten, sondern wegen der
+        # Vordergrundzusage.** watchOS laesst eine gewoehnliche App
+        # nach kurzer Zeit aufs Zifferblatt zurueckfallen; eine
+        # Workout-Sitzung ist der einzige Weg, der sie zuverlaessig
+        # beim Play haelt (siehe `Spielsitzung`).
+        #
+        # Beide Saetze werden dem Traeger woertlich gezeigt. Apple
+        # fragt bei HealthKit genauer nach als bei der Kamera: Ein
+        # Satz, der nur sagt DASS, ist ein Ablehnungsgrund.
+        NSHealthShareUsageDescription: >-
+          Routetree liest keine Gesundheitsdaten. Der Zugriff wird nur
+          gebraucht, damit die Uhr im Spielmodus auf deinem Play bleibt.
+        NSHealthUpdateUsageDescription: >-
+          Im Spielmodus zeichnet Routetree das Spiel als Training auf.
+          So bleibt die Uhr auf deinem Play, und du hast hinterher
+          Spielzeit und Puls in der Health-App.
+        # Ohne diesen Eintrag startet `HKWorkoutSession` auf der Uhr
+        # nicht -- sie wirft, und der Spielmodus saehe aus wie kaputt.
+        WKBackgroundModes:
+          - workout-processing
+    entitlements:
+      path: Uhr/Routetree.entitlements
+      properties:
+        # DIE BERECHTIGUNG, nicht nur der Erklaersatz. Beides muss da
+        # sein: Der Satz erklaert dem Traeger, die Berechtigung erlaubt
+        # es dem System. Fehlt sie, schlaegt schon das Signieren fehl
+        # -- und zwar mit einer Meldung ueber das Profil, die nicht
+        # nach HealthKit klingt.
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.access: []
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.routetree.app.watchkitapp
+        MARKETING_VERSION: "1.3"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "4"     # Apple Watch
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        DEVELOPMENT_LANGUAGE: de
+        SWIFT_EMIT_LOC_STRINGS: YES
+
+  RoutetreeUhrProben:
+    type: bundle.unit-test
+    platform: watchOS
+    deploymentTarget: "10.0"
+    sources:
+      - path: UhrProben
+    dependencies:
+      - target: RoutetreeUhr
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.routetree.app.watchkitapp.proben
+        GENERATE_INFOPLIST_FILE: YES
+
+  RoutetreeTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: RoutetreeTests
+    dependencies:
+      - target: Routetree
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.routetree.app.tests
+        # Xcode signiert auch das Testbuendel und braucht dafuer eine
+        # Info.plist. Eine von Hand gepflegte waere hier nur Ballast --
+        # ein Testbuendel hat keine Anzeigenamen und keine Berechtigungen.
+        # Ohne diese Zeile bricht der Bau ab mit „Cannot code sign because
+        # the target does not have an Info.plist file".
+        GENERATE_INFOPLIST_FILE: YES
+
+  # DAS ZIEL FUER DIE BILDSCHIRMFOTOS (R120).
+  #
+  # Getrennt von `RoutetreeTests`, und zwar mit Absicht:
+  # Oberflaechenpruefungen starten die App wirklich, tippen wirklich und
+  # warten auf Dinge, die noch nicht da sind. Im selben Schema zahlte
+  # jeder gewoehnliche Bau ihre Zeit und ihre Launen -- der Pruefstand,
+  # der heute in Sekunden antwortet, waere der langsamste Teil des Tages.
+  RoutetreeBilder:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: RoutetreeBilder
+    dependencies:
+      - target: Routetree
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.routetree.app.bilder
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Routetree
+
+schemes:
+  Routetree:
+    build:
+      targets:
+        Routetree: all
+        RoutetreeTests: [test]
+    test:
+      targets: [RoutetreeTests]
+      gatherCoverageData: true
+      # DIE PRUEFUNGEN LAUFEN AUF DEUTSCH -- und das ist seit R22 keine
+      # Kosmetik mehr, sondern Bedingung.
+      #
+      # Die Proben in `RoutetreeTests/` kommen aus Python
+      # (`FarbProben`, `RegistrierProben`, `DruckProben`, …) und stehen
+      # dort auf DEUTSCH, weil der Server deutsch antwortet. Auf der
+      # Swift-Seite gehen dieselben Saetze jetzt durch
+      # `String(localized:)`. Was dabei herauskommt, entscheidet die
+      # Sprache des Geraets: Ein Simulator auf Englisch liefert die
+      # englische Fassung, und dann vergleicht die Pruefung „Eigenes
+      # Mass" mit „Custom size" und faellt um -- ohne dass irgendetwas
+      # kaputt waere.
+      #
+      # Der Laeufer bei GitHub steht auf en-US. Ohne diese zwei Zeilen
+      # waere der erste Bau nach R22 rot, und die Ursache saehe aus wie
+      # ein Fehler in der Uebersetzung.
+      language: de
+      region: DE
+
+  # DIE UHR ALLEIN (R140). Das Schema `Routetree` baut sie als Beigabe
+  # mit; hier laufen ihre eigenen Pruefungen, ohne dass der Alltag die
+  # Zeit dafuer zahlt.
+  RoutetreeUhr:
+    build:
+      targets:
+        RoutetreeUhr: all
+        RoutetreeUhrProben: [test]
+    test:
+      targets: [RoutetreeUhrProben]
+      language: de
+      region: DE
+
+  # NUR FUER BILDER, und nur auf Abruf. Ein Schema, das der Alltag nicht
+  # anfasst: `fastlane pruefen` faehrt weiter `Routetree`, hier laeuft
+  # ausschliesslich der Durchgang, der fotografiert.
+  Bilder:
+    build:
+      targets:
+        Routetree: all
+        RoutetreeBilder: [test]
+    test:
+      targets: [RoutetreeBilder]
+      language: de
+      region: DE

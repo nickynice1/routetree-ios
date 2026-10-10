@@ -1,0 +1,291 @@
+{
+  "_wozu": "Die Texte der Storebilder. Gebaut mit scripts/storebilder_bauen.py",
+  "_faecher": "sprachen = iPhone 6.9 Zoll, ipad-13 = iPad Pro 12,9 Zoll",
+  "_ipad": "Drei Blatt statt vier. Das vierte war bis zum 10.10.2026 die Playbook-Liste mit einer einzigen Zeile, in der deutschen Fassung zusaetzlich mit halb eingeblendetem Anmeldefenster und dem Namen des Apple-Pruefzugangs darin. Ein viertes Blatt braucht eine neue Aufnahme mit gefuelltem Playbook, und die braucht einen Mac.",
+  "sprachen": {
+    "en-US": {
+      "01": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Draw it, don't describe it",
+        "schlagzeile": "Every yard on paper\nis a yard on the field",
+        "unter": "Routes snap to half yards and 45 degrees. Seven game formats, each with its own dimensions from its own rulebook."
+      },
+      "02": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "The whole playbook",
+        "schlagzeile": "Your call sheet,\nalways in your pocket",
+        "unter": "Sorted by situation and colour. Works on the sideline without a signal."
+      },
+      "03": {
+        "name": "uhr",
+        "bild": "04-uhr.png",
+        "geraet": "uhr",
+        "augenbraue": "On the Apple Watch",
+        "schlagzeile": "The play on your wrist,\nnot in your hand",
+        "unter": "The playbook on your watch, sorted by category. In game mode it stays on the play you are reading."
+      }
+    },
+    "de-DE": {
+      "01": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Zeichnen statt beschreiben",
+        "schlagzeile": "Fünf Yards auf dem Blatt\nsind fünf Yards auf dem Platz",
+        "unter": "Routen rasten auf halbe Yards und auf 45 Grad. Sieben Spielformen, jede mit ihren eigenen Maßen aus ihrem eigenen Regelbuch."
+      },
+      "02": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Das ganze Playbook",
+        "schlagzeile": "Euer Call Sheet,\nimmer in der Tasche",
+        "unter": "Nach Situation und Farbe sortiert. Funktioniert an der Seitenlinie auch ohne Empfang."
+      },
+      "03": {
+        "name": "uhr",
+        "bild": "04-uhr.png",
+        "geraet": "uhr",
+        "augenbraue": "Auf der Apple Watch",
+        "schlagzeile": "Der Play am Handgelenk,\nnicht in der Hand",
+        "unter": "Das Playbook auf der Uhr, nach Kategorien sortiert. Im Spielmodus bleibt sie auf dem Play stehen, den ihr gerade lest."
+      }
+    },
+    "es-ES": {
+      "01": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Dibujar, no describir",
+        "schlagzeile": "Cinco yardas en el papel\nson cinco en el campo",
+        "unter": "Las routes encajan en media yarda y en 45 grados. Siete modalidades, cada una con sus medidas de su propio reglamento."
+      },
+      "02": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Todo el playbook",
+        "schlagzeile": "Vuestro call sheet,\nsiempre en el bolsillo",
+        "unter": "Ordenado por situación y color. Funciona en la banda también sin cobertura."
+      },
+      "03": {
+        "name": "uhr",
+        "bild": "04-uhr.png",
+        "geraet": "uhr",
+        "augenbraue": "En el Apple Watch",
+        "schlagzeile": "La jugada en la muñeca,\nno en la mano",
+        "unter": "El playbook en el reloj, ordenado por categorías. En modo partido se queda en la jugada que estás leyendo."
+      }
+    },
+    "fr-FR": {
+      "01": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Dessiner, pas décrire",
+        "schlagzeile": "Cinq yards sur le papier\nsont cinq yards sur le terrain",
+        "unter": "Les routes s'alignent sur le demi-yard et sur 45 degrés. Sept formats, chacun avec ses dimensions de son propre règlement."
+      },
+      "02": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Tout le playbook",
+        "schlagzeile": "Votre call sheet,\ntoujours dans la poche",
+        "unter": "Trié par situation et par couleur. Fonctionne au bord du terrain même sans réseau."
+      },
+      "03": {
+        "name": "uhr",
+        "bild": "04-uhr.png",
+        "geraet": "uhr",
+        "augenbraue": "Sur l'Apple Watch",
+        "schlagzeile": "Le jeu au poignet,\npas dans la main",
+        "unter": "Le playbook à la montre, trié par catégories. En mode match, il reste sur le jeu que vous lisez."
+      }
+    },
+    "it": {
+      "01": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Disegnare, non descrivere",
+        "schlagzeile": "Cinque yard sul foglio\nsono cinque yard in campo",
+        "unter": "Le route si agganciano a mezza yard e a 45 gradi. Sette formati, ciascuno con le misure del proprio regolamento."
+      },
+      "02": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Tutto il playbook",
+        "schlagzeile": "La vostra call sheet,\nsempre in tasca",
+        "unter": "Ordinata per situazione e colore. Funziona a bordo campo anche senza rete."
+      },
+      "03": {
+        "name": "uhr",
+        "bild": "04-uhr.png",
+        "geraet": "uhr",
+        "augenbraue": "Su Apple Watch",
+        "schlagzeile": "La giocata al polso,\nnon in mano",
+        "unter": "Il playbook all'orologio, ordinato per categorie. In modalità partita resta sulla giocata che state leggendo."
+      }
+    },
+    "es-MX": {
+      "01": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Dibujar, no describir",
+        "schlagzeile": "Cinco yardas en el papel\nson cinco en el campo",
+        "unter": "Las rutas encajan en media yarda y en 45 grados. Siete modalidades, cada una con las medidas de su propio reglamento."
+      },
+      "02": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Todo el libro de jugadas",
+        "schlagzeile": "Tu call sheet,\nsiempre en la bolsa",
+        "unter": "Ordenado por situación y color. En la banda funciona también sin señal."
+      },
+      "03": {
+        "name": "uhr",
+        "bild": "04-uhr.png",
+        "geraet": "uhr",
+        "augenbraue": "En el Apple Watch",
+        "schlagzeile": "La jugada en la muñeca,\nno en la mano",
+        "unter": "Tu coach la pide desde la banda y aparece sola en el reloj. Tocho bandera y tackle."
+      }
+    }
+  },
+  "ipad-13": {
+    "de-DE": {
+      "01": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Das ganze Playbook",
+        "schlagzeile": "Alle Plays nebeneinander,\nnicht alle hintereinander",
+        "unter": "Nach Situation und Farbe sortiert. Auf dem großen Bildschirm liegt das halbe Heft offen vor euch."
+      },
+      "02": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Zeichnen statt beschreiben",
+        "schlagzeile": "Fünf Yards auf dem Blatt\nsind fünf Yards auf dem Platz",
+        "unter": "Routen rasten auf halbe Yards und auf 45 Grad. Sieben Spielformen, jede mit ihren eigenen Maßen aus ihrem eigenen Regelbuch."
+      },
+      "03": {
+        "name": "ueben",
+        "bild": "04-ueben.png",
+        "augenbraue": "Üben statt erklären",
+        "schlagzeile": "Das Diagramm steht.\nWie heißt der Play?",
+        "unter": "Der Übungsmodus fragt ab, statt zu dozieren. Das Trainerteam sieht, wer welchen Play sicher kann."
+      }
+    },
+    "en-US": {
+      "01": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "The whole playbook",
+        "schlagzeile": "Every play side by side,\nnot one after another",
+        "unter": "Sorted by situation and colour. On the big screen half the book lies open in front of you."
+      },
+      "02": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Draw it, don't describe it",
+        "schlagzeile": "Every yard on paper\nis a yard on the field",
+        "unter": "Routes snap to half yards and 45 degrees. Seven game formats, each with its own dimensions from its own rulebook."
+      },
+      "03": {
+        "name": "ueben",
+        "bild": "04-ueben.png",
+        "augenbraue": "Practise, don't lecture",
+        "schlagzeile": "The diagram is up.\nWhat is the play called?",
+        "unter": "Practice mode asks instead of telling. The coaching staff sees who knows each play by heart."
+      }
+    },
+    "es-ES": {
+      "01": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Todo el playbook",
+        "schlagzeile": "Todas las jugadas a la vez,\nno una tras otra",
+        "unter": "Ordenadas por situación y color. En la pantalla grande tenéis medio playbook abierto delante."
+      },
+      "02": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Dibujar, no describir",
+        "schlagzeile": "Cinco yardas en el papel\nson cinco en el campo",
+        "unter": "Las routes encajan en media yarda y en 45 grados. Siete modalidades, cada una con sus medidas de su propio reglamento."
+      },
+      "03": {
+        "name": "ueben",
+        "bild": "04-ueben.png",
+        "augenbraue": "Practicar, no explicar",
+        "schlagzeile": "El diagrama está ahí.\n¿Cómo se llama la jugada?",
+        "unter": "El modo de práctica pregunta en vez de dictar. El cuerpo técnico ve quién se sabe cada jugada."
+      }
+    },
+    "fr-FR": {
+      "01": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Tout le playbook",
+        "schlagzeile": "Tous les jeux côte à côte,\npas les uns après les autres",
+        "unter": "Triés par situation et par couleur. Sur grand écran, la moitié du playbook est ouverte devant vous."
+      },
+      "02": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Dessiner, pas décrire",
+        "schlagzeile": "Cinq yards sur le papier\nsont cinq yards sur le terrain",
+        "unter": "Les routes s'alignent sur le demi-yard et sur 45 degrés. Sept formats, chacun avec ses dimensions de son propre règlement."
+      },
+      "03": {
+        "name": "ueben",
+        "bild": "04-ueben.png",
+        "augenbraue": "Entraîner, pas expliquer",
+        "schlagzeile": "Le schéma est là.\nComment s'appelle ce jeu ?",
+        "unter": "Le mode entraînement interroge au lieu de dicter. Le staff voit qui connaît chaque jeu avec certitude."
+      }
+    },
+    "it": {
+      "01": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Tutto il playbook",
+        "schlagzeile": "Tutte le giocate affiancate,\nnon una dopo l'altra",
+        "unter": "Ordinate per situazione e colore. Sullo schermo grande avete mezzo playbook aperto davanti."
+      },
+      "02": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Disegnare, non descrivere",
+        "schlagzeile": "Cinque yard sul foglio\nsono cinque yard in campo",
+        "unter": "Le route si agganciano a mezza yard e a 45 gradi. Sette formati, ciascuno con le misure del proprio regolamento."
+      },
+      "03": {
+        "name": "ueben",
+        "bild": "04-ueben.png",
+        "augenbraue": "Allenare, non spiegare",
+        "schlagzeile": "Lo schema è lì.\nCome si chiama la giocata?",
+        "unter": "La modalità esercizio chiede invece di dettare. Lo staff vede chi sa ogni giocata con sicurezza."
+      }
+    },
+    "es-MX": {
+      "01": {
+        "name": "playbook",
+        "bild": "02-plays.png",
+        "augenbraue": "Todo el libro de jugadas",
+        "schlagzeile": "Todas las jugadas juntas,\nno una tras otra",
+        "unter": "Ordenadas por situación y color. En la pantalla grande tienes medio libro abierto enfrente."
+      },
+      "02": {
+        "name": "draw",
+        "bild": "03-spielzug.png",
+        "augenbraue": "Dibujar, no describir",
+        "schlagzeile": "Cinco yardas en el papel\nson cinco en el campo",
+        "unter": "Las rutas encajan en media yarda y en 45 grados. Siete modalidades, cada una con las medidas de su propio reglamento."
+      },
+      "03": {
+        "name": "ueben",
+        "bild": "04-ueben.png",
+        "augenbraue": "Practicar, no explicar",
+        "schlagzeile": "Ahí está el diagrama.\n¿Cómo se llama la jugada?",
+        "unter": "El modo de práctica pregunta en vez de dictar. El cuerpo técnico ve quién se sabe cada jugada."
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+Routetree es el playbook para flag y tackle football, hecho con las medidas de tu modalidad, no con medidas convertidas.
+
+DIBUJAR, NO SOLO CONSULTAR
+Arrastra un jugador, toca una route y listo. Las routes encajan en media yarda y en 45 grados. Motion, bloqueo, entrega, pase y zona son tipos de línea propios, con deshacer, espejo y reproducción. Se guarda solo.
+
+SIETE MODALIDADES, CADA UNA CON SUS MEDIDAS
+Flag 5 contra 5 y tackle con 11, 9, 9 en campo estrecho, 7, 6 o 5. Se elige al crear el equipo; a partir de ahí el campo, la end zone, las hashmarks, la formación y los avisos de regla salen correctos solos. Cada cifra viene del reglamento de esa modalidad y no está convertida de otra.
+
+SIETE REGLAMENTOS
+AFVD, IFAF, NFL FLAG, FIDAF, FEFA, FFFA y FMFA, además de las categorías. Si cambias de reglamento un playbook ya hecho, Routetree no recalcula nada en silencio: te dice qué jugadas necesitan una decisión. Una jugada de carrera que con la IFAF es limpia, con las reglas de NFL FLAG es sanción.
+
+CINCO YARDAS EN EL PAPEL SON CINCO YARDAS EN EL CAMPO
+Quien dibuja una route a doce yardas quiere decir doce yardas. Ni un programa de once contra once con las medidas reducidas, ni uno de flag que va adivinando en el juego de once.
+
+UNA BIBLIOTECA PARA EMPEZAR
+Conceptos ya dibujados que encajan con tu modalidad: en flag, Mesh, Flood, Verticals, Smash, Stick, Levels, Wheel, Screen, Snag y Slant & Flat. Con formación, routes y un párrafo sobre contra qué se corren. Cógelo, renómbralo, cámbialo. Nadie empieza con una página en blanco.
+
+IMPRIMIR PARA EL DÍA DE PARTIDO
+Insertos de wristcoach con zona de corte y marcas de esquina, playcards para recortar, un call sheet agrupado por situación. PDFs de verdad, a escala. Compartir desde la app o imprimir directamente.
+
+EN LA MUÑECA
+Hay una versión propia para el Apple Watch: el playbook en la muñeca, ordenado por categorías, y en modo partido se queda en la jugada que estás leyendo.
+
+PRACTICAR EN LUGAR DE EXPLICAR
+El modo de práctica pregunta en vez de dictar: muestra el diagrama, di el nombre. Sin reloj y sin clasificación. El cuerpo técnico ve quién se sabe cada jugada con seguridad y puede asignar jugadas a jugadores concretos.
+
+PARA TODO EL EQUIPO
+El head coach y los asistentes editan, el equipo mira. Quien solo mira no cuesta nada. Los jugadores entran con un código de equipo, sin que nadie tenga que teclear accesos.
+
+SIN CONEXIÓN
+En la banda hay zonas sin cobertura. Ver y practicar también funcionan ahí.
+
+VUESTRAS JUGADAS SIGUEN SIENDO VUESTRAS
+Servidores en Alemania. Sin rastreo, sin redes publicitarias, sin ceder nada a terceros. Cada equipo ve solo lo suyo. La cuenta se puede borrar por completo desde la app.
+
+Para probarlo: un playbook, ocho jugadas, impresiones con una banda de demo.
+
+Condiciones de uso: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacidad: https://routetree.de/datenschutz/

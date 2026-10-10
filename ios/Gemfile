@@ -1,0 +1,6 @@
+source "https://rubygems.org"
+
+# Feste Fassung: Ein fastlane, das sich beim naechsten Bau von selbst
+# aktualisiert, ist ein Bau, der aus Gruenden bricht, die niemand
+# geaendert hat.
+gem "fastlane", "~> 2.228"

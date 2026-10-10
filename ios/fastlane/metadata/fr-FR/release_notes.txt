@@ -1,0 +1,3 @@
+L'éditeur parle maintenant ta langue partout. Quelques boutons et champs étaient restés en allemand en anglais, espagnol, français et italien, en pleine inscription et à la lecture d'un jeu.
+
+Les images iPad sont remises en page, avec un titre au lieu d'une capture brute.

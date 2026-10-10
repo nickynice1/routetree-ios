@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>method</key>
+	<string>app-store-connect</string>
+
+	<!-- Direkt hochladen statt eine .ipa abzulegen, die dann jemand von
+	     Hand hochlädt. Ein Zwischenschritt von Hand ist der Schritt, der
+	     vergessen wird. -->
+	<key>destination</key>
+	<string>upload</string>
+
+	<key>uploadSymbols</key>
+	<true/>
+
+	<!-- Ohne Symbole sind Absturzberichte aus TestFlight unlesbar. -->
+	<key>signingStyle</key>
+	<string>automatic</string>
+
+	<!-- Kein Bitcode mehr, seit Xcode 14 abgeschafft. Steht hier, damit
+	     niemand es "der Vollständigkeit halber" wieder einbaut. -->
+	<key>manageAppVersionAndBuildNumber</key>
+	<false/>
+</dict>
+</plist>

@@ -1,0 +1,327 @@
+default_platform(:ios)
+
+# Routetree nach TestFlight.
+#
+# Aufgebaut nach dem Vorbild von `nova-app` -- dort laeuft dieser Weg seit
+# Wochen. Wer hier etwas aendert, sollte dort nachsehen, bevor er es neu
+# erfindet.
+#
+# WARUM FASTLANE UND NICHT NACKTES XCODEBUILD. Wegen `match`. Zertifikate
+# und Profile liegen verschluesselt in einem eigenen Git-Repo und werden
+# auf dem Laeufer geholt statt bei jedem Bau neu erzeugt. Der Weg ohne
+# match bedeutet, Zertifikate als base64 in Geheimnisse zu legen und den
+# Schluesselbund von Hand aufzubauen -- das funktioniert, bis eins
+# ablaeuft, und dann bricht der Bau ohne Vorwarnung.
+
+APP_ID  = "de.routetree.app"
+
+# DIE UHR HAT EINE EIGENE KENNUNG (R140).
+#
+# Eine watchOS-App ist ein eigenes Buendel mit eigenem Profil, auch wenn
+# sie im Buendel des iPhones mitreist. Ohne diese Zeilen bricht der
+# Export ab mit „No profile for team ... matching
+# 'de.routetree.app.watchkitapp' found" -- und zwar erst nach dem
+# vollstaendigen Bau.
+#
+# Das Suffix `.watchkitapp` ist Apples Vorgabe und keine Erfindung: Der
+# Store erwartet die Uhr-Kennung als Anhaengsel der App-Kennung.
+UHR_ID  = "de.routetree.app.watchkitapp"
+TEAM_ID = "TWWACY35P9"
+
+# WELCHE SIMULATOREN ES GIBT, WEISS NUR DER LAEUFER.
+#
+# In `lane :bilder` stand am 15.09.2026 `["iPhone 16 Pro Max",
+# "iPad Pro 13-inch (M4)"]`, fest getippt. Auf `macos-26` gibt es weder
+# das eine noch das andere. fastlane sagte es sogar -- „Ignoring 'iPhone
+# 16 Pro Max', couldn't find matching simulator" -- und fiel dann auf den
+# ersten besten zurueck, „iPhone 17 Pro". Der Lauf war GRUEN, dauerte
+# eine halbe Stunde und lieferte Bilder in 1206x2622. Der Store verlangt
+# fuer das 6,9-Zoll-iPhone 1320x2868 und nimmt nichts anderes.
+#
+# Xcode bringt mit jeder Fassung neue Geraete mit und nimmt alte weg. Ein
+# getippter Name ist deshalb ein Verfallsdatum. Gesucht wird nach Muster,
+# genommen wird das JUENGSTE passende: erst nach den Zahlen im Namen
+# (17 schlaegt 16, M5 schlaegt M4), bei Gleichstand nach dem Namen.
+#
+# UND WENN NICHTS PASST, BRICHT ES AB. Ein Rueckfall auf irgendein Geraet
+# ist genau der Fehler von oben: Er sieht aus wie Erfolg.
+def simulator(muster)
+  require "json"
+  faecher = JSON.parse(`xcrun simctl list -j devices available`)["devices"]
+  namen = faecher.values.flatten.map { |g| g["name"] }.uniq
+  treffer = namen.select { |n| n =~ muster }
+  if treffer.empty?
+    UI.user_error!("Kein Simulator passt auf #{muster.inspect}. " \
+                   "Vorhanden sind: #{namen.sort.join(', ')}")
+  end
+  gewaehlt = treffer.max_by { |n| [n.scan(/\d+/).map(&:to_i), n] }
+  UI.message("Simulator fuer #{muster.inspect}: #{gewaehlt}")
+  gewaehlt
+end
+
+# Welcher Ort zu welcher Sprache gehoert -- fuer `-testRegion`.
+#
+# EINE TABELLE UND KEINE ABLEITUNG, aus demselben Grund wie die
+# gleichnamige in `Bildschirmfotos.swift`: `en` heisst `US` und nicht
+# `EN`. Wer das rechnet, rechnet bei der ersten Sprache falsch, die
+# nicht so heisst wie ihr Land -- und Englisch ist die erste.
+#
+# `fetch` und nicht `[]`: Eine unbekannte Sprache soll den Lauf
+# abbrechen, nicht stillschweigend zu `nil` werden. Ein `-testRegion`
+# ohne Wert verschluckt die naechste Flagge.
+ORTE = {
+  "de" => "DE", "en" => "US", "es" => "ES", "fr" => "FR", "it" => "IT",
+}.freeze
+
+platform :ios do
+  desc "Signieren (match) und zu TestFlight hochladen"
+  lane :beta do
+    setup_ci
+
+    key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_API_KEY"]
+    )
+
+    # Dasselbe Zertifikats-Repo wie Nova. `match` haelt darin mehrere
+    # App-Kennungen nebeneinander -- ein zweites Repo waere ein zweites
+    # Passwort, das jemand verliert.
+    match(
+      type: "appstore",
+      # BEIDE. `match` legt je Kennung ein eigenes Profil an; eine Liste
+      # ist hier der vorgesehene Weg und kein Trick.
+      app_identifier: [APP_ID, UHR_ID],
+      api_key: key,
+      git_url: "https://github.com/nickynice1/nova-app-certs",
+      storage_mode: "git",
+      readonly: false,
+      # Frische Profile bei jedem Lauf: Sobald an der App-ID eine
+      # Faehigkeit dazukommt, setzt Apple bestehende Profile auf
+      # INVALID. `match` merkt das nicht zuverlaessig und liefert sonst
+      # weiter das alte -- die Signierung scheitert dann mit einer
+      # Meldung, die nach etwas ganz anderem klingt.
+      force: true
+    )
+
+    # Das Projekt muss WISSEN, welches Profil es nehmen soll.
+    #
+    # `match` legt Zertifikat und Profil an -- aber es traegt sie nicht
+    # ins Projekt ein. Ohne diesen Schritt bricht der Bau ab mit
+    # „Routetree requires a provisioning profile", und die Meldung klingt
+    # so, als fehle das Profil. Es ist da; nur zeigt niemand darauf.
+    #
+    # Erst hier und nicht in `project.yml`: Dort wuerde es auch fuer den
+    # Simulatorlauf gelten, der gar nicht signiert.
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Routetree.xcodeproj",
+      targets: ["Routetree"],
+      code_sign_identity: "Apple Distribution",
+      profile_name: "match AppStore #{APP_ID}",
+      team_id: TEAM_ID
+    )
+
+    # DASSELBE FUER DIE UHR, und zwar getrennt: Jedes Ziel zeigt auf
+    # SEIN Profil. Beide auf dasselbe zeigen zu lassen waere der
+    # naheliegende Fehler -- ein Profil gilt fuer genau eine Kennung.
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Routetree.xcodeproj",
+      targets: ["RoutetreeUhr"],
+      code_sign_identity: "Apple Distribution",
+      profile_name: "match AppStore #{UHR_ID}",
+      team_id: TEAM_ID
+    )
+
+    # DIE BUILDNUMMER IST EIN ZEITSTEMPEL.
+    #
+    # Zwei Anlaeufe davor waren falsch, und beide aus einem lehrreichen
+    # Grund.
+    #
+    # ERSTENS `ENV["GITHUB_RUN_NUMBER"]`. Die steigt zuverlaessig --
+    # innerhalb eines Repos. Gebaut wird hier ueber einen oeffentlichen
+    # Spiegel, der nach jedem Upload geloescht wird, und ein neues Repo
+    # faengt bei 1 an. Die Nummer ging von 8 auf 3 zurueck.
+    #
+    # ZWEITENS `latest_testflight_build_number + 1`. Das klingt richtig
+    # und ist es nicht: „latest" heisst ZULETZT HOCHGELADEN, nicht
+    # HOECHSTE. Zuletzt hochgeladen war die 3, also wurde daraus die 4 --
+    # und in TestFlight stand weiter die 8 obenauf.
+    #
+    # Ein Zeitstempel hat das Problem nicht. Er steigt immer, er kollidiert
+    # nie, er braucht keine Rueckfrage bei Apple und er ueberlebt jedes
+    # geloeschte Repo. `%y%m%d%H%M` ergibt zum Beispiel 2608202130 fuer
+    # den 20.08.2026 um 21:30 UTC, ist also auch lesbar.
+    #
+    # GRENZE: Apple erlaubt bis 4294967295. Diese Form reicht bis ins
+    # Jahr 2042. Wer das hier 2042 liest, nimmt Minuten seit 2026.
+    naechste = Time.now.utc.strftime("%y%m%d%H%M")
+    UI.message("Buildnummer #{naechste} (Zeitstempel, steigt immer)")
+    increment_build_number(
+      xcodeproj: "Routetree.xcodeproj",
+      build_number: naechste
+    )
+
+    build_app(
+      project: "Routetree.xcodeproj",
+      scheme: "Routetree",
+      configuration: "Release",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          APP_ID => "match AppStore #{APP_ID}",
+          UHR_ID => "match AppStore #{UHR_ID}"
+        },
+        teamID: TEAM_ID
+      }
+    )
+
+    upload_to_testflight(
+      api_key: key,
+      skip_waiting_for_build_processing: true,
+      # Keine Testhinweise erfinden: Was drinsteht, liest die Mannschaft.
+      # Steht dort etwas Falsches, ist es schlimmer als nichts.
+      changelog: ENV["TESTFLIGHT_HINWEIS"] || "Neuer Stand aus der Entwicklung."
+    )
+  end
+
+  desc "Nur bauen, ohne Signierung -- die Fehlersuche des Alltags"
+  lane :pruefen do
+    run_tests(
+      project: "Routetree.xcodeproj",
+      scheme: "Routetree",
+      devices: ["iPhone 16"],
+      skip_slack: true
+    )
+  end
+
+  desc "Bildschirmfotos fuer den Store aufnehmen (R120)"
+  lane :bilder do
+    # ZWEI GROESSEN, weil Apple zwei verlangt: das grosse iPhone
+    # (6,9 Zoll) und das grosse iPad (13 Zoll). Wer nur eine liefert,
+    # bekommt die Version nicht eingereicht.
+    ziele = {
+      "iphone-6.9" => simulator(/\AiPhone .*Pro Max\z/),
+      "ipad-13"    => simulator(/\AiPad Pro 13-inch/),
+    }
+
+    # JE GERAET EIN EIGENER LAUF UND EIN EIGENES FACH.
+    #
+    # Zusammen in einem Buendel laegen die Aufnahmen beider Geraete in
+    # einem Topf, und welche zu welchem gehoert, stuende nur in der
+    # Bildgroesse. Der Store will sie getrennt -- also werden sie
+    # getrennt abgelegt.
+    # JE SPRACHE EIN EIGENER LAUF (30.09.2026).
+    #
+    # Bis hierher lief der Durchgang nur auf Deutsch, und der US-Store
+    # zeigte deshalb dieselben deutschen Bilder wie der deutsche. Ein
+    # amerikanischer Trainer sah „Demo-Playbook" und „Mannschaften".
+    #
+    # Welche Sprachen, steht in der Umgebung: Ein Lauf ueber fuenf
+    # Sprachen mal zwei Geraete ist zehnmal ein Oberflaechendurchgang,
+    # und ein macOS-Laeufer kostet das Zehnfache eines Linux-Laeufers.
+    # Wer nur Englisch nachziehen will, soll nicht fuer fuenf zahlen.
+    sprachen = (ENV["BILDER_SPRACHEN"] || "de").split(",").map(&:strip)
+    UI.message("Sprachen: #{sprachen.join(', ')}")
+
+    # Welche Durchgaenge aufgegeben haben. Gesammelt statt sofort
+    # abgebrochen -- die Begruendung steht unten am Ende der Schleife.
+    gescheitert = []
+
+    ziele.each do |geraet_fach, geraet|
+     sprachen.each do |sprache|
+      fach = "#{geraet_fach}/#{sprache}"
+      UI.message("Bilder auf #{geraet} (#{sprache}) → " \
+                 "fastlane/bilder_ausgabe/#{fach}")
+      # `TEST_RUNNER_` DAVOR IST PFLICHT, und `xcargs` waere falsch:
+      # Das setzt eine BAU-Einstellung, keine Umgebung. Der Durchgang
+      # laeuft auf dem Simulator und erbt die Umgebung des Laeufers
+      # nicht; xcodebuild reicht genau die Variablen mit diesem
+      # Vorsatz hinein und streift ihn dabei ab. Genau daran ist der
+      # Pruefzugang am 15.09.2026 schon einmal gescheitert.
+      ENV["TEST_RUNNER_BILDER_SPRACHE"] = sprache
+      # AUFFANGEN STATT DURCHREICHEN.
+      #
+      # `fail_build: false` stand hier und hat genau das getan, was es
+      # verspricht -- und genau das war das Problem: Der Lauf vom
+      # 30.09.2026 war GRUEN und lieferte fuer das iPhone ein einziges
+      # Bild, das vom Anfang. Die Anmeldung war gescheitert, in beiden
+      # Sprachen, und der Haken war trotzdem gruen.
+      #
+      # Jetzt bricht ein Durchgang ab wie er soll, wird hier
+      # aufgefangen und am Ende gemeldet. Beides bleibt erhalten: Die
+      # uebrigen Geraete und Sprachen laufen weiter (sonst kostete ein
+      # Fehlschlag im ersten Fach alle anderen Aufnahmen), und der Lauf
+      # wird am Ende trotzdem rot.
+      begin
+      run_tests(
+        project: "Routetree.xcodeproj",
+        scheme: "Bilder",
+        devices: [geraet],
+        # DIE SPRACHE MUSS HIER STEHEN, NICHT NUR IM TEST.
+        #
+        # **Gefunden am 30.09.2026 an einem Bild.** Der englische
+        # Durchgang lieferte eine App auf DEUTSCH: Systemleiste
+        # englisch, Oberflaeche deutsch („Auswahl", „Gesichert").
+        # Danach fand der Durchgang sein naechstes Element nicht mehr
+        # und brach ab -- was wie ein Fehler in der App aussah und
+        # keiner war.
+        #
+        # Die Ursache steht in `project.yml`: Das Schema `Bilder`
+        # traegt `language: de, region: DE`. xcodebuild schiebt der App
+        # damit `-AppleLanguages (de)` unter, BEVOR
+        # `Bildschirmfotos.swift` sein `(en)` anhaengt -- und bei
+        # doppeltem Schluessel im Argumentbereich gewinnt der ERSTE.
+        # Die Zeile im Test war also nie wirkungslos, sie kam nur zu
+        # spaet.
+        #
+        # `-testLanguage`/`-testRegion` sind xcodebuild-FLAGGEN und
+        # keine Bau-Einstellungen; fuer sie ist `xcargs` genau der
+        # richtige Weg (anders als fuer die Umgebung daneben, siehe
+        # oben). Sie ueberschreiben, was im Schema steht.
+        #
+        # Der Test setzt seine Startargumente weiter -- dann stimmen
+        # beide ueberein, und ein Aufruf von Hand ohne diese Flaggen
+        # tut immer noch das Richtige.
+        xcargs: "-testLanguage #{sprache} -testRegion #{ORTE.fetch(sprache)}",
+        # ABBRECHEN, wenn ein Bildschirm fehlt -- und eine Zeile
+        # tiefer aufgefangen werden. Siehe `begin` oben.
+        fail_build: true,
+        skip_slack: true,
+        result_bundle: true,
+        output_directory: "fastlane/bilder_ausgabe/#{fach}"
+      )
+      rescue StandardError => fehler
+        gescheitert << "#{geraet_fach}/#{sprache}: #{fehler.message.lines.first.to_s.strip}"
+        UI.error("Durchgang #{geraet_fach}/#{sprache} gescheitert. " \
+                 "Die Bilder bis dahin liegen im Ausgabefach.")
+      end
+     end
+    end
+
+    # WAS NICHT KAM, MUSS AUFFALLEN.
+    #
+    # **Der Lauf vom 30.09.2026 war gruen und lieferte fuer das iPhone
+    # EIN Bild** -- das vom Anfang, plus eins von der gescheiterten
+    # Anmeldung. Vier von fuenf Bildern fehlten, in beiden Sprachen,
+    # und niemand haette es gemerkt: `fail_build: false` steht oben
+    # mit Absicht (ein fehlender Bildschirm soll nicht alle anderen
+    # Aufnahmen verlieren), aber es macht aus jedem Fehlschlag einen
+    # gruenen Haken.
+    #
+    # Also wird hier GEZAEHLT. Nicht was da ist, sondern was fehlt:
+    # Ein Fach mit einem Fehlerbild (`99-…`) hat unterwegs aufgegeben,
+    # und das ist etwas anderes als „hat alles".
+    unless gescheitert.empty?
+      # ABBRECHEN, NICHT NUR MELDEN. Die Bilder von eben liegen schon
+      # im Ausgabefach und gehen als Artefakt mit -- es ist also
+      # nichts verloren. Was verloren waere: die Gelegenheit, es zu
+      # merken, bevor jemand halbe Bilderstrecken in den Store laedt.
+      UI.user_error!("Diese Durchgaenge haben unterwegs aufgegeben:\n  " +
+                     gescheitert.join("\n  ") +
+                     "\n\nDie Fehlerbilder (99-…) liegen im Artefakt und " \
+                     "zeigen, wo. Die uebrigen Aufnahmen sind trotzdem da.")
+    end
+  end
+end

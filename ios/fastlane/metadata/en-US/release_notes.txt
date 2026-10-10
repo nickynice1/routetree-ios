@@ -1,0 +1,3 @@
+The editor now speaks your language everywhere. A handful of buttons and field labels had stayed German in English, Spanish, French and Italian, right in the middle of signing up and when playing back a play.
+
+The iPad screenshots are newly laid out, with a headline instead of a raw capture.
